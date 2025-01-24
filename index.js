@@ -6,273 +6,282 @@ let catalogue = [];
 let cart = [];
 
 fetch("./catalogue.json")
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error. Status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(data => {
-        addCatalogueItemsToMenu(data);
-        // Populate the catalogue array
-        data.forEach(item => catalogue.push(item));
-    })
-    .catch(error => console.error("Unable to fetch data:", error));
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error(`HTTP error. Status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then((data) => {
+    addCatalogueItemsToMenu(data);
+    // Populate the catalogue array
+    data.forEach((item) => catalogue.push(item));
+  })
+  .catch((error) => console.error("Unable to fetch data:", error));
 
 const checkoutBtn = document.getElementById("checkout-btn");
 checkoutBtn.addEventListener("click", checkout);
 
 function addCatalogueItemsToMenu(catalogue) {
-    const menuItems = document.getElementById("menu-items");
+  const menuItems = document.getElementById("menu-items");
 
-    Array.from(catalogue)
-        .map(item => createShopItem(item))
-        .forEach(item => menuItems.appendChild(item));
+  Array.from(catalogue)
+    .map((item) => createShopItem(item))
+    .forEach((item) => menuItems.appendChild(item));
 }
 
 function createShopItem(itemObject) {
-    const shopItemCard = document.createElement("div");
-    shopItemCard.id = `item-${itemObject.id}`;
-    shopItemCard.classList.add("card");
+  const shopItemCard = document.createElement("div");
+  shopItemCard.id = `item-${itemObject.id}`;
+  shopItemCard.classList.add("card");
 
-    // The image of the item on the card
-    const cardImage = document.createElement("img");
-    cardImage.src = itemObject.imgUrl;
-    cardImage.alt = itemObject.description;
-    cardImage.classList.add("card-img-top", "mt-2");
+  // The image of the item on the card
+  const cardImage = document.createElement("img");
+  cardImage.src = itemObject.imgUrl;
+  cardImage.alt = itemObject.description;
+  cardImage.classList.add("card-img-top", "mt-2");
 
-    // The body of the card item
-    const cardBody = document.createElement("div");
-    cardBody.classList.add("card-body");
+  // The body of the card item
+  const cardBody = document.createElement("div");
+  cardBody.classList.add("card-body");
 
-    // The title and price of the card item
-    const cardTitleAndPrice = document.createElement("span");
-    cardTitleAndPrice.classList.add("card-title");
+  // The title and price of the card item
+  const cardTitleAndPrice = document.createElement("span");
+  cardTitleAndPrice.classList.add("card-title");
 
-    const cardTitle = document.createElement("strong");
-    cardTitle.id = `item-title-${itemObject.id}`;
-    cardTitle.innerText = `${itemObject.name} • `;
-    const cardPrice = document.createElement("span");
-    cardPrice.id = `item-price-${itemObject.id}`;
-    cardPrice.innerText = `$${itemObject.price.toFixed(2)}`;
+  const cardTitle = document.createElement("strong");
+  cardTitle.id = `item-title-${itemObject.id}`;
+  cardTitle.innerText = `${itemObject.name} • `;
+  const cardPrice = document.createElement("span");
+  cardPrice.id = `item-price-${itemObject.id}`;
+  cardPrice.innerText = `$${itemObject.price.toFixed(2)}`;
 
-    cardTitleAndPrice.appendChild(cardTitle);
-    cardTitleAndPrice.appendChild(cardPrice);
+  cardTitleAndPrice.appendChild(cardTitle);
+  cardTitleAndPrice.appendChild(cardPrice);
 
-    // The description of the card item
-    const cardDescription = document.createElement("p");
-    cardDescription.innerText = itemObject.description;
-    cardDescription.classList.add("card-text");
+  // The description of the card item
+  const cardDescription = document.createElement("p");
+  cardDescription.innerText = itemObject.description;
+  cardDescription.classList.add("card-text");
 
-    const addOrRemoveFromCartBtns = document.createElement("div");
-    addOrRemoveFromCartBtns.classList.add("row", "gap-2", "text-center", "justify-content-center");
+  const addOrRemoveFromCartBtns = document.createElement("div");
+  addOrRemoveFromCartBtns.classList.add(
+    "row",
+    "gap-2",
+    "text-center",
+    "justify-content-center"
+  );
 
-    // Button to remove an item from the cart
-    const removeFromCartBtn = document.createElement("a");
-    removeFromCartBtn.classList.add("btn", "btn-outline-danger", "col-1", "p-0", "py-2");
-    removeFromCartBtn.innerText = "-";
-    // Text with the amount of this item in the cart
-    const amountLabel = document.createElement("h5");
-    amountLabel.id = `amt-${itemObject.id}`;
-    amountLabel.classList.add("inline-block", "col-3", "pt-2");
-    amountLabel.innerText = "0";
-    // Button to add the item to the cart
-    const addToCartBtn = document.createElement("a");
-    addToCartBtn.classList.add("btn", "btn-danger", "col-1", "p-0", "py-2");
-    addToCartBtn.innerText = "+";
+  // Button to remove an item from the cart
+  const removeFromCartBtn = document.createElement("a");
+  removeFromCartBtn.classList.add(
+    "btn",
+    "btn-outline-danger",
+    "col-1",
+    "p-0",
+    "py-2"
+  );
+  removeFromCartBtn.innerText = "-";
+  // Text with the amount of this item in the cart
+  const amountLabel = document.createElement("h5");
+  amountLabel.id = `amt-${itemObject.id}`;
+  amountLabel.classList.add("inline-block", "col-3", "pt-2");
+  amountLabel.innerText = "0";
+  // Button to add the item to the cart
+  const addToCartBtn = document.createElement("a");
+  addToCartBtn.classList.add("btn", "btn-danger", "col-1", "p-0", "py-2");
+  addToCartBtn.innerText = "+";
 
-    addOrRemoveFromCartBtns.appendChild(removeFromCartBtn);
-    addOrRemoveFromCartBtns.appendChild(amountLabel);
-    addOrRemoveFromCartBtns.appendChild(addToCartBtn);
+  addOrRemoveFromCartBtns.appendChild(removeFromCartBtn);
+  addOrRemoveFromCartBtns.appendChild(amountLabel);
+  addOrRemoveFromCartBtns.appendChild(addToCartBtn);
 
-    addToCartBtn.addEventListener("click", function() {
-        addItemToCart(itemObject);
-        updateCheckoutBtn();
-        updateItemAmountLabel(itemObject.id);
-    });
+  addToCartBtn.addEventListener("click", function () {
+    addItemToCart(itemObject);
+    updateCheckoutBtn();
+    updateItemAmountLabel(itemObject.id);
+  });
 
-    removeFromCartBtn.addEventListener("click", function() {
-        removeItemFromCart(itemObject.id);
-        updateCheckoutBtn();
-        updateItemAmountLabel(itemObject.id);
-    })
+  removeFromCartBtn.addEventListener("click", function () {
+    removeItemFromCart(itemObject.id);
+    updateCheckoutBtn();
+    updateItemAmountLabel(itemObject.id);
+  });
 
-    cardBody.appendChild(cardTitleAndPrice);
-    cardBody.appendChild(cardDescription);
-    cardBody.appendChild(addOrRemoveFromCartBtns);
-    shopItemCard.appendChild(cardImage);
-    shopItemCard.appendChild(cardBody);
+  cardBody.appendChild(cardTitleAndPrice);
+  cardBody.appendChild(cardDescription);
+  cardBody.appendChild(addOrRemoveFromCartBtns);
+  shopItemCard.appendChild(cardImage);
+  shopItemCard.appendChild(cardBody);
 
-    return shopItemCard;
+  return shopItemCard;
 }
 
 function updateCheckoutBtn() {
-    const totalItemsInCart = cart
-        .map(item => item.amount)
-        .reduce((acc, amount) => acc + amount, 0);
+  const totalItemsInCart = cart
+    .map((item) => item.amount)
+    .reduce((acc, amount) => acc + amount, 0);
 
-    const checkoutBtn = document.getElementById("checkout-btn");
-    checkoutBtn.innerText = `Checkout (${totalItemsInCart})`;
-    if (cart.length === 0) {
-        checkoutBtn.classList.add("btn-outline-danger");
-        checkoutBtn.classList.remove("btn-danger");
-    } else {
-        checkoutBtn.classList.add("btn-danger");
-        checkoutBtn.classList.remove("btn-outline-danger");
-    }
+  const checkoutBtn = document.getElementById("checkout-btn");
+  checkoutBtn.innerText = `Checkout (${totalItemsInCart})`;
+  if (cart.length === 0) {
+    checkoutBtn.classList.add("btn-outline-danger");
+    checkoutBtn.classList.remove("btn-danger");
+  } else {
+    checkoutBtn.classList.add("btn-danger");
+    checkoutBtn.classList.remove("btn-outline-danger");
+  }
 }
 
 function addItemToCart(itemObject) {
-    let found = false;
+  let found = false;
 
-    for (let i = 0; i < cart.length; i++) {
-        if (cart[i].id === itemObject.id) {
-            cart[i].amount++;
-            found = true;
-            break;
-        }
+  for (let i = 0; i < cart.length; i++) {
+    if (cart[i].id === itemObject.id) {
+      cart[i].amount++;
+      found = true;
+      break;
     }
+  }
 
-    if (!found) {
-        cart.push({ id: itemObject.id, amount: 1 });
-    }
+  if (!found) {
+    cart.push({ id: itemObject.id, amount: 1 });
+  }
 }
 
 function removeItemFromCart(id) {
-    const item = cart.find(item => item.id === id);
-    if (item === undefined) {
-        return;
-    }
+  const item = cart.find((item) => item.id === id);
+  if (item === undefined) {
+    return;
+  }
 
-    const position = cart.indexOf(item);
-    cart[position].amount--;
+  const position = cart.indexOf(item);
+  cart[position].amount--;
 
-    if (cart[position].amount <= 0) {
-        cart.splice(position, 1);
-    }
+  if (cart[position].amount <= 0) {
+    cart.splice(position, 1);
+  }
 }
 
 function updateItemAmountLabel(id) {
-    const amountLabel = document.getElementById(`amt-${id}`);
-    
-    const item = cart.find(item => item.id === id);
-    if (item === undefined) {
-        amountLabel.innerText = "0";
-        return;
-    }
+  const amountLabel = document.getElementById(`amt-${id}`);
 
-    amountLabel.innerText = `${item.amount}`;
+  const item = cart.find((item) => item.id === id);
+  if (item === undefined) {
+    amountLabel.innerText = "0";
+    return;
+  }
+
+  amountLabel.innerText = `${item.amount}`;
 }
 
 function removeAllItemsFromCart() {
-    cart = [];
+  cart = [];
 
-    catalogue
-        .map(item => item.id)
-        .forEach(id => updateItemAmountLabel(id));
-    
-    updateCheckoutBtn();
+  catalogue.map((item) => item.id).forEach((id) => updateItemAmountLabel(id));
+
+  updateCheckoutBtn();
 }
 
 function checkout() {
-    const checkoutBodyElem = document.getElementById("checkout-body");
+  const checkoutBodyElem = document.getElementById("checkout-body");
 
-    if (cart.length === 0) {
-        const message = "Your cart is empty. Add items to proceed to checkout.";
-        checkoutBodyElem.innerHTML = message;
+  if (cart.length === 0) {
+    const message = "Your cart is empty. Add items to proceed to checkout.";
+    checkoutBodyElem.innerHTML = message;
 
-        return;
-    }
+    return;
+  }
 
-    checkoutBodyElem.innerHTML += "<hr>";
+  checkoutBodyElem.innerHTML += "<hr>";
 
-    const checkoutItemsElem = document.createElement("div");
-    checkoutItemsElem.id = "checkout-items";
+  const checkoutItemsElem = document.createElement("div");
+  checkoutItemsElem.id = "checkout-items";
 
-    let total = 0;
+  let total = 0;
 
-    // List the name, price, and amount of each item in the cart
+  // List the name, price, and amount of each item in the cart
 
-    cart.forEach(cartEntry => {
-        const item = catalogue.find(item => item.id === cartEntry.id);
+  cart.forEach((cartEntry) => {
+    const item = catalogue.find((item) => item.id === cartEntry.id);
 
-        const row = document.createElement("div");
-        row.id = `checkout-item-${cartEntry.id}`;
-        row.classList.add("row");
+    const row = document.createElement("div");
+    row.id = `checkout-item-${cartEntry.id}`;
+    row.classList.add("row");
 
-        const itemName = document.createElement("p");
-        itemName.classList.add("inline-block", "col");
-        itemName.innerText = item.name;
+    const itemName = document.createElement("p");
+    itemName.classList.add("inline-block", "col");
+    itemName.innerText = item.name;
 
-        const itemPrice = document.createElement("p");
-        itemPrice.classList.add("inline-block", "col-3");
+    const itemPrice = document.createElement("p");
+    itemPrice.classList.add("inline-block", "col-3");
 
-        itemPrice.innerHTML = `$${item.price.toFixed(2)}`;
-        itemPrice.innerHTML += cartEntry.amount > 1 ? ` x${cartEntry.amount}` : "";
-        
-        row.appendChild(itemName);
-        row.appendChild(itemPrice);
-        checkoutItemsElem.appendChild(row);
+    itemPrice.innerHTML = `$${item.price.toFixed(2)}`;
+    itemPrice.innerHTML += cartEntry.amount > 1 ? ` x${cartEntry.amount}` : "";
 
-        total += item.price * cartEntry.amount;
-    });
+    row.appendChild(itemName);
+    row.appendChild(itemPrice);
+    checkoutItemsElem.appendChild(row);
 
-    // Calculate and create the subtotal, tax total, and total elements
+    total += item.price * cartEntry.amount;
+  });
 
-    const subtotal = total;
-    const taxTotal = subtotal / salesTaxRateInCalifornia;
-    total += taxTotal;
+  // Calculate and create the subtotal, tax total, and total elements
 
-    const pricesRow = document.createElement("div");
-    pricesRow.classList.add("row");
+  const subtotal = total;
+  const taxTotal = subtotal / salesTaxRateInCalifornia;
+  total += taxTotal;
 
-    const subtotalLabel = document.createElement("p");
-    subtotalLabel.classList.add("inline-block", "col-12", "text-start");
-    subtotalLabel.innerText = `Subtotal: $${subtotal.toFixed(2)}`;
+  const pricesRow = document.createElement("div");
+  pricesRow.classList.add("row");
 
-    const taxLabel = document.createElement("p");
-    taxLabel.classList.add("inline-block", "col-12", "text-start");
-    taxLabel.innerText = `Tax: $${taxTotal.toFixed(2)}`;
+  const subtotalLabel = document.createElement("p");
+  subtotalLabel.classList.add("inline-block", "col-12", "text-start");
+  subtotalLabel.innerText = `Subtotal: $${subtotal.toFixed(2)}`;
 
-    const totalLabel = document.createElement("p");
-    totalLabel.classList.add("inline-block", "col-12", "text-start");
-    totalLabel.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
+  const taxLabel = document.createElement("p");
+  taxLabel.classList.add("inline-block", "col-12", "text-start");
+  taxLabel.innerText = `Tax: $${taxTotal.toFixed(2)}`;
 
-    pricesRow.appendChild(subtotalLabel);
-    pricesRow.appendChild(taxLabel);
-    pricesRow.appendChild(totalLabel);
-    checkoutItemsElem.appendChild(pricesRow);
+  const totalLabel = document.createElement("p");
+  totalLabel.classList.add("inline-block", "col-12", "text-start");
+  totalLabel.innerHTML = `<strong>Total: $${total.toFixed(2)}</strong>`;
 
-    // Create the Place Order button
-    
-    const placeOrderBtnRow = document.createElement("div");
-    placeOrderBtnRow.classList.add("row")
-    
-    const placeOrderBtn = document.createElement("a");
-    placeOrderBtn.id = "place-order-btn";
-    placeOrderBtn.classList.add("btn", "btn-danger", "col", "mx-2");
-    placeOrderBtn.innerText = "Place Order";
-    placeOrderBtn.addEventListener("click", function() {
-        removeAllItemsFromCart();
-        checkout();
-        placeOrder();
-    });
+  pricesRow.appendChild(subtotalLabel);
+  pricesRow.appendChild(taxLabel);
+  pricesRow.appendChild(totalLabel);
+  checkoutItemsElem.appendChild(pricesRow);
 
-    placeOrderBtnRow.appendChild(placeOrderBtn);
-    checkoutBodyElem.appendChild(checkoutItemsElem);
-    checkoutBodyElem.appendChild(placeOrderBtnRow);
+  // Create the Place Order button
+
+  const placeOrderBtnRow = document.createElement("div");
+  placeOrderBtnRow.classList.add("row");
+
+  const placeOrderBtn = document.createElement("a");
+  placeOrderBtn.id = "place-order-btn";
+  placeOrderBtn.classList.add("btn", "btn-danger", "col", "mx-2");
+  placeOrderBtn.innerText = "Place Order";
+  placeOrderBtn.addEventListener("click", function () {
+    removeAllItemsFromCart();
+    checkout();
+    placeOrder();
+  });
+
+  placeOrderBtnRow.appendChild(placeOrderBtn);
+  checkoutBodyElem.appendChild(checkoutItemsElem);
+  checkoutBodyElem.appendChild(placeOrderBtnRow);
 }
 
 function placeOrder() {
-    const alertPlaceholder = document.getElementById("order-placed-alert");
-    const wrapper = document.createElement('div');
+  const alertPlaceholder = document.getElementById("order-placed-alert");
+  const wrapper = document.createElement("div");
 
-    wrapper.innerHTML = [
-        `<div class="alert alert-success alert-dismissible m-3" role="alert">`,
-        `   <div>Order placed, thank you!</div>`,
-        '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-        '</div>'
-    ].join('');
+  wrapper.innerHTML = [
+    `<div class="alert alert-success alert-dismissible m-3" role="alert">`,
+    `   <div>Order placed, thank you!</div>`,
+    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+    "</div>",
+  ].join("");
 
-    alertPlaceholder.append(wrapper);
+  alertPlaceholder.append(wrapper);
 }
