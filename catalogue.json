@@ -1,0 +1,58 @@
+[
+  {
+    "id": "6c80af75-fc14-4679-90e3-44934d813a8b",
+    "name": "Caddy",
+    "type": "sandwich",
+    "description": "Roast beef, crème fraîche, cheddar cheese and spring mix on a French baguette",
+    "price": 8.15,
+    "imgUrl": "public/images/item-caddy.png"
+  },
+  {
+    "id": "09ff9035-5e8a-4258-babd-16827476fec7",
+    "name": "VW",
+    "type": "sandwich",
+    "description": "Carrots, jalapeños, apples, sprouts, Swiss cheese, tomatoes, onions & cilantro aioli on sliced whole wheat",
+    "price": 7.25,
+    "imgUrl": "public/images/item-vw.png"
+  },
+  {
+    "id": "b4ced2a0-5369-4a18-93b0-b1f32a990351",
+    "name": "BLT",
+    "type": "sandwich",
+    "description": "Bacon, lettuce and tomato on sourdough bread",
+    "price": 7.5,
+    "imgUrl": "public/images/item-blt.png"
+  },
+  {
+    "id": "ce2344c7-9f08-472e-a7ed-32e87c9c0460",
+    "name": "Road Hog",
+    "type": "sandwich",
+    "description": "Slow-roasted pulled pork, carrot & cabbage sweet slaw, mayo spread on a brioche roll",
+    "price": 7.95,
+    "imgUrl": "public/images/item-road-hog.png"
+  },
+  {
+    "id": "2693bd10-966e-4461-aa14-1b5cb763dd3a",
+    "name": "Tri Tip",
+    "type": "sandwich",
+    "description": "Smoked tri-tip with hand crafted dry rub on an herb cheese roll",
+    "price": 8.25,
+    "imgUrl": "public/images/item-tri-tip.png"
+  },
+  {
+    "id": "936e8514-344d-497e-96f7-b83fa3a6f48c",
+    "name": "Supercharger",
+    "type": "sandwich",
+    "description": "If you are \"super\" hungry this is for you! Roast beef, bacon, turkey, ham, salami, pepperonchini, tomatoes, red onions, gouda cheese & chipotle aioli on a ciabatta roll",
+    "price": 9.75,
+    "imgUrl": "public/images/item-supercharger.png"
+  },
+  {
+    "id": "87b3346a-352b-4a02-b907-ebbe4efafe67",
+    "name": "Bel Air",
+    "type": "sandwich",
+    "description": "If you are \"super\" hungry this is for you! Roast beef, bacon, turkey, ham, salami, pepperonchini, tomatoes, red onions, gouda cheese & chipotle aioli on a ciabatta roll",
+    "price": 9.75,
+    "imgUrl": "public/images/item-bel-air.png"
+  }
+]

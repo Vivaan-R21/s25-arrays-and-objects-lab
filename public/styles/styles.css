@@ -1,0 +1,11 @@
+.D {
+  border: 1px solid red;
+}
+
+.card {
+  width: 25rem;
+}
+.card img {
+  height: 12rem;
+  object-fit: cover;
+}
