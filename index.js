@@ -23,11 +23,21 @@ const checkoutBtn = document.getElementById("checkout-btn");
 checkoutBtn.addEventListener("click", checkout);
 
 function addCatalogueItemsToMenu(catalogue) {
-  const menuItems = document.getElementById("menu-items");
-
-  Array.from(catalogue)
-    .map((item) => createShopItem(item))
-    .forEach((item) => menuItems.appendChild(item));
+  // TODO: (7a) Create a variable named menuItems that will get an
+  // element in our HTML document with the ID of "menu-items".
+  //
+  // TODO: (7b) Create an array from the input parameter, catalogue,
+  // using the Array.from function.
+  //
+  // TODO: (7c) createShopItem is a function that returns an HTML
+  // element from an object in catalogue.json. Chain a call to .map,
+  // mapping each item in the catalogue to a call to createShopItem.
+  //
+  // TODO: (7d) Chain a call to .forEach. forEach is a function that
+  // applies one or multiple operations to each element, one at a
+  // time. For each element in our output from calling .map, use the
+  // .appendChild method on menuItems to append the current element
+  // to the document.
 }
 
 function createShopItem(itemObject) {
@@ -51,10 +61,24 @@ function createShopItem(itemObject) {
 
   const cardTitle = document.createElement("strong");
   cardTitle.id = `item-title-${itemObject.id}`;
-  cardTitle.innerText = `${itemObject.name} • `;
+
+  // TODO: (8a) Access the object's "name" property to display the
+  // correct name of the item. Replace the string "Item Name" with
+  // the correct expression.
+  cardTitle.innerText = `${"Item Name"} • `;
+
   const cardPrice = document.createElement("span");
   cardPrice.id = `item-price-${itemObject.id}`;
-  cardPrice.innerText = `$${itemObject.price.toFixed(2)}`;
+
+  // TODO: (8b) Access the object’s price property to display the
+  // correct price of the item. Replace the value 0.0 inside the
+  // template literal with the correct expression.
+  //
+  // TODO: (8c) Within the same template literal from the previous
+  // step (step 8b), use the .toFixed(2) function to fix the decimal
+  // precision to two decimal places. This will format our decimal
+  // numbers to a string in the form of 0.00 instead of 0.0.
+  cardPrice.innerText = `$${0.0}`;
 
   cardTitleAndPrice.appendChild(cardTitle);
   cardTitleAndPrice.appendChild(cardPrice);
@@ -134,19 +158,23 @@ function updateCheckoutBtn() {
 }
 
 function addItemToCart(itemObject) {
-  let found = false;
-
-  for (let i = 0; i < cart.length; i++) {
-    if (cart[i].id === itemObject.id) {
-      cart[i].amount++;
-      found = true;
-      break;
-    }
-  }
-
-  if (!found) {
-    cart.push({ id: itemObject.id, amount: 1 });
-  }
+  // TODO: (9a) Create a for-loop to iterate the same amount of
+  // times as there are elements in our cart.
+  //
+  // TODO: (9b) Continuing from the previous step (9a), inside the
+  // for-loop we must check if the current element’s
+  // (the ith element) id property is equal to the itemObject’s
+  // id property.
+  //
+  // If the ids match, then we must increment the current
+  // element’s amount property by 1 and return. We return at
+  // this point because there is no need to keep traversing
+  // our array after finding the element we are looking for.
+  //
+  // TODO: (9c) Outside the for-loop we created in the previous
+  // step (9b), we must push the object to the cart. If code
+  // reaches this point, it means the id we looked for was never
+  // found in our cart, so we add it.
 }
 
 function removeItemFromCart(id) {
@@ -186,12 +214,14 @@ function removeAllItemsFromCart() {
 function checkout() {
   const checkoutBodyElem = document.getElementById("checkout-body");
 
-  if (cart.length === 0) {
-    const message = "Your cart is empty. Add items to proceed to checkout.";
-    checkoutBodyElem.innerHTML = message;
-
-    return;
-  }
+  // TODO: (10a) Display a message to alert the user that their cart is empty,
+  // only if the cart is empty. Within that same if-statement, return after
+  // setting the message since there is no need to execute the rest of the
+  // function if the cart is empty.
+  //
+  // TODO: (10b) Update the total, adding the price for each item in the cart.
+  // Remember that multiple of the same item may be added to the cart! Use the
+  // amount property to retrieve the amount.
 
   checkoutBodyElem.innerHTML += "<hr>";
 
